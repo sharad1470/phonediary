@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
 
+import './App.css';
+import Header from './components/header/header';
+import ContactList from './components/contactlist/ContactList';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import api from './common/api/contacts';
 function App() {
+  const [contactList ,setContactList]=useState([]);
+
+  useEffect(()=>{
+
+    const getContactList=async ()=>{
+      const response=await api.get('/contacts');
+      if(response)
+        setContactList(response.data);
+    }
+    getContactList();
+  },[])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header/>
+      <ContactList contactList={contactList}/>
     </div>
   );
 }

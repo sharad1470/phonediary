@@ -1,0 +1,41 @@
+.contactlist{
+    padding:25px 0px;
+    
+
+}
+
+.contactlist-search{
+    background-color: white;
+    padding: 6px 4px;
+    display: flex;
+    width:70%;
+    border-radius: 10px;
+    align-items: center;
+    font-weight: 400;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+.contactlist-search input{
+    border: none;
+    outline: none;
+    width: 70%;
+    
+}
+.contactlist-search i{
+    margin-right: 4px;
+    
+}
+.contactlist-info{
+   
+        height: 70vh;
+        border: 1px solid transparent;
+        padding: 20px;
+        box-shadow: 5px 10px #888888;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        overflow-y: scroll;
+        
+
+}
