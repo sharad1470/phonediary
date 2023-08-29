@@ -3,6 +3,11 @@
     
 
 }
+.contactlist-search-button{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 .contactlist-search{
     background-color: white;
@@ -12,9 +17,16 @@
     border-radius: 10px;
     align-items: center;
     font-weight: 400;
-    margin: auto;
+    
     margin-bottom: 10px;
 }
+.add-button{
+    background-color: white;
+    padding: 10px;
+    border-radius: 20px 20px;
+    
+}
+
 
 .contactlist-search input{
     border: none;
