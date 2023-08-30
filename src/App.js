@@ -8,50 +8,16 @@ import api from './common/api/contacts';
 import AddContact from './components/AddContact/AddContact';
 import { BrowserRouter as Router , Routes, Route } from 'react-router-dom';
 import EditContact from './components/editContact/EditContact';
+import { useDispatch } from 'react-redux';
+import {addContacts,deleteContact} from './redux/actions/actions';
 function App() {
-  const [contactList ,setContactList]=useState([]);
-  const [searchResult, setSearchResult]=useState([]);
-  const [query, setQuery]=useState("");
-  console.log(query);
+  const dispatch=useDispatch();
+  
 
 
-  const addContactHandler= async (contact) =>{
-    console.log(contact);
+ 
 
-    const request={
-      id:Date.now().toString, 
-      ...contact
-    };
-    const response=await api.post('/contacts',request);
-
-    setContactList([...contactList,response.data]);
-  };
-  const deleteContactHandler=async (id)=>{
-    await api.delete(`/contacts/${id}`);
-
-    setContactList( contactList.filter((contact)=>{
-      return contact.id!==id
-    }))
-  } 
-
-  const searchListHandler=(quer)=>{
-    setQuery(quer);
-    setSearchResult(contactList.filter((contact)=>{
-
-      return Object.values(contact).join(" ")
-      .toLowerCase().includes(quer.toLowerCase());
-
-    }))
-  }
-
-  const editContactHandler=async(data)=>{
-    const response=await api.put(`/contacts/${data.id}`,data);
-    
-    const updatedList=contactList.map((contact)=>{
-      return contact.id===response.id?{...contact,...response.data}:contact;
-    })
-      setContactList(updatedList);
-  } 
+  
 
 
   useEffect(()=>{
@@ -59,8 +25,10 @@ function App() {
     const getContactList=async ()=>{
       const response=await api.get('/contacts');
       if(response)
-        setContactList(response.data);
-        setSearchResult(response.data);
+      dispatch(addContacts(response.data));
+        // setContactList(response.data);
+        // setSearchResult(response.data);
+       
     }
     getContactList();
   },[])
@@ -73,22 +41,18 @@ function App() {
         <Route 
           path='/'
           exact
-          element={<ContactList contactList={query!==""?searchResult:contactList}
-          deleteContactHandler={deleteContactHandler}
-          query={query}
-        searchListHandler={searchListHandler}
-          />}
+          element={<ContactList />}
         />
 
         <Route 
           path='/add-contact'
           exact
-          element={<AddContact addContactHandler={addContactHandler}/>}
+          element={<AddContact />}
         />
          <Route 
           path='/edit-contact'
           exact
-          element={<EditContact editContactHandler={editContactHandler}/>}
+          element={<EditContact />}
         />
       </Routes>
       

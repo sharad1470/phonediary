@@ -1,21 +1,29 @@
 import React, { useState } from 'react';
 import './EditContact.css';
 import { Location, useLocation } from 'react-router-dom';
-const EditContact = ({editContactHandler}) => {
+import { useDispatch } from 'react-redux';
+import { editContact } from '../../redux/actions/actions';
+import api from '../../common/api/contacts';
+const EditContact = () => {
     const location=useLocation();
+    const dispatch=useDispatch();
 
     const {id,name, phone}=location.state;
 
     const [newname,setNewName]=useState(name);
     const [newPhone, setNewPhone]=useState(phone);
 
-    const editHandler=()=>{
+    
+
+    const editHandler=async()=>{
+
         const data={
             id,
             name:newname,
             phone:newPhone
         }
-        editContactHandler(data);
+        const response=await api.put(`/contacts/${data.id}`,data);
+        dispatch(editContact(data));
         window.location='/';
     }
 

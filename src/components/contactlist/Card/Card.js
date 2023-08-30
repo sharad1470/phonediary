@@ -1,8 +1,18 @@
 import React from 'react';
 import './Card.css';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from '../../../redux/actions/actions';
+import api from '../../../common/api/contacts';
 
-const Card = ({contact, deleteContactHandler}) => {
+const Card = ({contact}) => {
+    const dispatch=useDispatch();
+
+    const deleteContactHandler=async (id)=>{
+        await api.delete(`/contacts/${id}`);
+    
+        dispatch(deleteContact(id));
+      } 
     return (
         <div className='card'>
             <div className='card-left'>

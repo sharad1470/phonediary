@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import './AddContact.css';
 import { Link } from 'react-router-dom';
-const AddContact = ({addContactHandler}) => {
+import { useDispatch } from 'react-redux';
+import api from '../../common/api/contacts'
+import { addContact } from '../../redux/actions/actions';
+const AddContact = () => {
+    const dispatch=useDispatch();
     const [name,setName]= useState("");
     const [phone,setPhone]=useState("");
-      const submitForm=(e)=>{
+      const submitForm= async (e)=>{
         e.preventDefault();
         if(name=="" || phone==""){
             alert('please enter all details')
@@ -13,11 +17,14 @@ const AddContact = ({addContactHandler}) => {
 
 
         const contact={
+            id:Date.now.toString,
             name,
             phone
         }
         console.log(contact);
-        addContactHandler(contact);
+
+        const response=await api.post('/contacts',contact);
+        dispatch(addContact(contact));
         window.location='/';
         return;
     }

@@ -2,8 +2,17 @@ import React from 'react';
 import './ContactList.css';
 import Card from './Card/Card';
 import { Link } from 'react-router-dom';
-const ContactList = ({contactList, deleteContactHandler,query,searchListHandler}) => {
+import { useDispatch, useSelector } from 'react-redux';
+import { searchContact } from '../../redux/actions/actions';
+const ContactList = () => {
+    const dispatch=useDispatch();
     
+    const contactList=useSelector((state)=>state.contacts.contacts);
+    const query=useSelector((state)=>state.contacts.query);
+    const filteredList=contactList.filter((item)=>{
+     return   Object.values(item).join(" ").toLowerCase()
+     .includes(query.toLowerCase())
+    });
     return (
         <div className='contactlist'>
             <div className='contactlist-search-button'>
@@ -11,7 +20,7 @@ const ContactList = ({contactList, deleteContactHandler,query,searchListHandler}
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input placeholder='Search contact in the list'
                     value={query}
-                    onChange={(e)=>searchListHandler(e.target.value)}
+                    onChange={(e)=>dispatch(searchContact(e.target.value))}
                 />
             </div>
             <Link style={{textDecoration:'none', color:'black'}} to='/add-contact'>
@@ -20,9 +29,11 @@ const ContactList = ({contactList, deleteContactHandler,query,searchListHandler}
             </div>
             <div className='contactlist-info'>
                 {
-                    contactList.length?(
-                        contactList.map((contact)=>{
-                            return <Card contact={contact} deleteContactHandler={deleteContactHandler}/>
+                    filteredList.length?(
+                        filteredList.map((contact)=>{
+                            return <Card contact={contact} 
+                            //deleteContactHandler={deleteContactHandler}
+                            />
                         })
                     ):(<div>Empty List</div>)
                 }
